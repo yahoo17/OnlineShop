@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask, request, render_template
-
+from userinfo import *
 app = Flask(__name__)
 
 @app.route('/test', methods=['GET', 'POST'])
@@ -44,19 +44,31 @@ def profile():
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    return "hello world"
+    return "hello world you can visit /signin /sign"
 
 @app.route('/signin', methods=['GET'])
 def signin_form():
     return render_template('form.html')
 
+#
 @app.route('/signin', methods=['POST'])
 def signin():
     username = request.form['username']
     password = request.form['password']
-    if username=='admin' and password=='password':
+    if username=='6666' and password=='123456':
         return render_template('signin-ok.html', username=username)
     return render_template('form.html', message='Bad username or password', username=username)
+
+
+@app.route('/user/<id>',methods=['POST','GET'])
+def info(id):
+    temp=userInfo_instance.get_userInfo(id)
+    print(temp)
+    return temp
+
+
+
+
 
 if __name__ == '__main__':
     app.run()
