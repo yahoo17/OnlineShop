@@ -11,30 +11,148 @@
     <!-- 页面主体区域 -->
     <el-container>
       <!-- 侧边栏 -->
-      <el-aside width="200px">
+      <el-aside :width="isCollapse ? '64px' : '200px'">
+        <div class="toggle-button" @click="toggleCollapse">|||</div>
         <!-- 侧边栏菜单区 -->
-        <el-menu background-color="#333744" text-color="#fff" active-text-color="#ffd04b">
+        <el-menu background-color="#333744" text-color="#fff" active-text-color="#ffd04b" unique-opened
+          :collapse="isCollapse" :collapse-transition="false">
           <!-- 一级菜单 -->
           <el-submenu index="1">
             <!-- 一级菜单模版区域 -->
             <template slot="title">
               <!-- 图标 -->
-              <i class="el-icon-location"></i>
+              <i class="el-icon-s-custom"></i>
               <!-- 文本 -->
-              <span>导航一</span>
+              <span>用户管理</span>
             </template>
             <!-- 二级菜单 -->
-            <el-menu-item index="1-4-1">
+            <el-menu-item index="1-1">
               <!-- 一级菜单模版区域 -->
               <template slot="title">
                 <!-- 图标 -->
-                <i class="el-icon-location"></i>
+                <i class="el-icon-s-help"></i>
+                <!-- 文本 -->
+                <span>用户列表</span>
+              </template>
+            </el-menu-item>
+          </el-submenu>
+
+          <!-- 一级菜单 -->
+          <el-submenu index="2">
+            <!-- 一级菜单模版区域 -->
+            <template slot="title">
+              <!-- 图标 -->
+              <i class="el-icon-s-cooperation"></i>
+              <!-- 文本 -->
+              <span>权限管理</span>
+            </template>
+            <!-- 二级菜单 -->
+            <el-menu-item index="2-1">
+              <!-- 一级菜单模版区域 -->
+              <template slot="title">
+                <!-- 图标 -->
+                <i class="el-icon-s-help"></i>
+                <!-- 文本 -->
+                <span>角色列表</span>
+              </template>
+            </el-menu-item>
+
+            <!-- 二级菜单 -->
+            <el-menu-item index="2-2">
+              <!-- 一级菜单模版区域 -->
+              <template slot="title">
+                <!-- 图标 -->
+                <i class="el-icon-s-help"></i>
+                <!-- 文本 -->
+                <span>权限列表</span>
+              </template>
+            </el-menu-item>
+          </el-submenu>
+
+          <!-- 一级菜单 -->
+          <el-submenu index="3">
+            <!-- 一级菜单模版区域 -->
+            <template slot="title">
+              <!-- 图标 -->
+              <i class="el-icon-shopping-cart-1"></i>
+              <!-- 文本 -->
+              <span>商品管理</span>
+            </template>
+            <!-- 二级菜单 -->
+            <el-menu-item index="3-1">
+              <!-- 一级菜单模版区域 -->
+              <template slot="title">
+                <!-- 图标 -->
+                <i class="el-icon-s-help"></i>
+                <!-- 文本 -->
+                <span>商品列表</span>
+              </template>
+            </el-menu-item>
+
+            <!-- 二级菜单 -->
+            <el-menu-item index="3-2">
+              <!-- 一级菜单模版区域 -->
+              <template slot="title">
+                <!-- 图标 -->
+                <i class="el-icon-s-help"></i>
+                <!-- 文本 -->
+                <span>分类参数</span>
+              </template>
+            </el-menu-item>
+
+            <!-- 二级菜单 -->
+            <el-menu-item index="3-3">
+              <!-- 一级菜单模版区域 -->
+              <template slot="title">
+                <!-- 图标 -->
+                <i class="el-icon-s-help"></i>
+                <!-- 文本 -->
+                <span>商品分类</span>
+              </template>
+            </el-menu-item>
+          </el-submenu>
+
+          <!-- 一级菜单 -->
+          <el-submenu index="4">
+            <!-- 一级菜单模版区域 -->
+            <template slot="title">
+              <!-- 图标 -->
+              <i class="el-icon-s-order"></i>
+              <!-- 文本 -->
+              <span>订单管理</span>
+            </template>
+            <!-- 二级菜单 -->
+            <el-menu-item index="4-1">
+              <!-- 一级菜单模版区域 -->
+              <template slot="title">
+                <!-- 图标 -->
+                <i class="el-icon-s-help"></i>
                 <!-- 文本 -->
                 <span>导航一</span>
               </template>
             </el-menu-item>
           </el-submenu>
 
+          <!-- 一级菜单 -->
+          <el-submenu index="5">
+            <!-- 一级菜单模版区域 -->
+            <template slot="title">
+              <!-- 图标 -->
+              <i class="el-icon-s-platform"></i>
+              <!-- 文本 -->
+              <span>数据统计</span>
+            </template>
+            <!-- 二级菜单 -->
+            <el-menu-item index="5-1">
+              <!-- 一级菜单模版区域 -->
+              <template slot="title">
+                <!-- 图标 -->
+                <i class="el-icon-s-help"></i>
+                <!-- 文本 -->
+                <span>导航一</span>
+              </template>
+            </el-menu-item>
+          </el-submenu>
         </el-menu>
       </el-aside>
       <!-- 右侧内容主体 -->
@@ -45,17 +163,28 @@
 
 <script>
 export default {
-  /*
+  data () {
+    return {
+      // 是否折叠
+      isCollapse: false
+    }
+  },
+
   methods: {
+    /*
     logout () {
       window.sessionStorage.clear()
       this.$router.push('/login')
     }
+    */
+    // 点击按钮切换菜单的折叠展开
+    toggleCollapse () {
+      this.isCollapse = !this.isCollapse
+    }
   }
-  */
 }
-
 </script>
+
 <style lang="less" scoped>
 .el-header {
   background-color: #373d41;
@@ -81,11 +210,22 @@ export default {
 }
 .el-aside {
   background-color: #333744;
+  .el-menu {
+    border-right: 0;
+  }
 }
 .el-main {
   background-color: #eaedf1;
 }
 .home-container {
   height: 100%;
+}
+.toggle-button {
+  background-color: #4a5064;
+  font-size: 10px;
+  line-height: 24px;
+  color: #fff;
+  text-align: center;
+  letter-spacing: 0.2em;
 }
 </style>
