@@ -4,6 +4,7 @@ import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
 Vue.use(Router)
 export default new Router({
+  mode: 'hash',
   routes: [
     { path: '/', redirect: '/login' },
     { path: '/login', component: Login },
