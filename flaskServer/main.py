@@ -4,30 +4,16 @@ from flask import Flask, request, render_template
 from userinfo import *
 from sqlalchemy import create_engine,Table,Column,Integer,String,MetaData,ForeignKey
 from sqlalchemy.orm import sessionmaker
-from database import init_db 
+from database import init_db ,db_session
 
+from  model import *
 app = Flask(__name__)
 init_db()
-# engine=create_engine('mysql+pymysql://root:123456@localhost:3307/test?charset=utf8',echo=True)
-# db_session = scoped_session(sessionmaker(autocommit=False,
-#                                          autoflush=False,
-#                                          bind=engine))
-# Base = declarative_base()
-# Base.query = db_session.query_property()
-# app.config['SECRET_KEY'] = '123456'
-# app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:123456@localhost:3307/test?charset=utf8' #这里登陆的是root用户，要填上自己的密码，MySQL的默认端口是3306，填上之前创建的数据库名text1
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=True       #设置这一项是每次请求结束后都会自动提交数据库中的变动
-
-# db=SQLAlchemy(app)
-
-
-# metadata=MetaData(engine)
-# DBSession = sessionmaker(bind=engine)
 
     
 @app.route('/test', methods=['GET', 'POST'])
 def test():
-    
+
     if request.method=='GET':      
             return 'you send server a GET request'
     elif request.method=='POST':
@@ -52,7 +38,6 @@ def profile():
         # 如果要在POST body里面发消息
         ## 需要在POST body里面
         print(request.form)
-
         name=request.json.get('name')
         if name=='yanhao':
             return dict(name='yanhao',fans=1000000,info='你给服务器我 发了一条POST,里面有 严灏 所以我给你返回')
@@ -70,7 +55,7 @@ def home():
 def signin_form():
     return render_template('form.html')
 
-#
+
 @app.route('/signin', methods=['POST'])
 def signin():
     username = request.form['username']
@@ -79,16 +64,22 @@ def signin():
         return render_template('signin-ok.html', username=username)
     return render_template('form.html', message='Bad username or password', username=username)
 
+@app.route('/signup',methods=['POST'])
+def signup():
+    userid = request.form['id']
+    name = request.form['username']
+    email=request.form['email']
+    u=User(name,email)
+    db_session.add(u)
+    db_session.commit()
+    return render_template('signup-ok.html', username=name)
+
 
 @app.route('/user/<id>',methods=['POST','GET'])
 def info(id):
     temp=userInfo_instance.get_userInfo(id)
     print(temp)
     return temp
-
-
-
-
 
 if __name__ == '__main__':
     app.run()
