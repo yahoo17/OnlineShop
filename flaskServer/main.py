@@ -1,10 +1,30 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 from flask import Flask, request, render_template
 from userinfo import *
-app = Flask(__name__)
+from sqlalchemy import create_engine,Table,Column,Integer,String,MetaData,ForeignKey
+from sqlalchemy.orm import sessionmaker
+from database import init_db 
 
+app = Flask(__name__)
+init_db()
+# engine=create_engine('mysql+pymysql://root:123456@localhost:3307/test?charset=utf8',echo=True)
+# db_session = scoped_session(sessionmaker(autocommit=False,
+#                                          autoflush=False,
+#                                          bind=engine))
+# Base = declarative_base()
+# Base.query = db_session.query_property()
+# app.config['SECRET_KEY'] = '123456'
+# app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:123456@localhost:3307/test?charset=utf8' #这里登陆的是root用户，要填上自己的密码，MySQL的默认端口是3306，填上之前创建的数据库名text1
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=True       #设置这一项是每次请求结束后都会自动提交数据库中的变动
+
+# db=SQLAlchemy(app)
+
+
+# metadata=MetaData(engine)
+# DBSession = sessionmaker(bind=engine)
+
+    
 @app.route('/test', methods=['GET', 'POST'])
 def test():
     
