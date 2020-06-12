@@ -15,7 +15,7 @@
         <div class="toggle-button" @click="toggleCollapse">|||</div>
         <!-- 侧边栏菜单区 -->
         <el-menu background-color="#333744" text-color="#fff" active-text-color="#ffd04b" unique-opened
-          :collapse="isCollapse" :collapse-transition="false">
+          :collapse="isCollapse" :collapse-transition="false" router default-active="activePath">
           <!-- 一级菜单 -->
           <el-submenu index="1">
             <!-- 一级菜单模版区域 -->
@@ -26,7 +26,7 @@
               <span>用户管理</span>
             </template>
             <!-- 二级菜单 -->
-            <el-menu-item index="1-1">
+            <el-menu-item index="users" @click="saveNavState('/users')">
               <!-- 一级菜单模版区域 -->
               <template slot="title">
                 <!-- 图标 -->
@@ -47,7 +47,7 @@
               <span>权限管理</span>
             </template>
             <!-- 二级菜单 -->
-            <el-menu-item index="2-1">
+            <el-menu-item index="roles" @click="saveNavState('/roles')">
               <!-- 一级菜单模版区域 -->
               <template slot="title">
                 <!-- 图标 -->
@@ -58,7 +58,7 @@
             </el-menu-item>
 
             <!-- 二级菜单 -->
-            <el-menu-item index="2-2">
+            <el-menu-item index="rights" @click="saveNavState('/rights')">
               <!-- 一级菜单模版区域 -->
               <template slot="title">
                 <!-- 图标 -->
@@ -79,7 +79,7 @@
               <span>商品管理</span>
             </template>
             <!-- 二级菜单 -->
-            <el-menu-item index="3-1">
+            <el-menu-item index="3-1" @click="saveNavState('/3-1')">
               <!-- 一级菜单模版区域 -->
               <template slot="title">
                 <!-- 图标 -->
@@ -90,7 +90,7 @@
             </el-menu-item>
 
             <!-- 二级菜单 -->
-            <el-menu-item index="3-2">
+            <el-menu-item index="3-2" @click="saveNavState('/3-2')">
               <!-- 一级菜单模版区域 -->
               <template slot="title">
                 <!-- 图标 -->
@@ -101,7 +101,7 @@
             </el-menu-item>
 
             <!-- 二级菜单 -->
-            <el-menu-item index="3-3">
+            <el-menu-item index="categories" @click="saveNavState('/categories')">
               <!-- 一级菜单模版区域 -->
               <template slot="title">
                 <!-- 图标 -->
@@ -122,7 +122,7 @@
               <span>订单管理</span>
             </template>
             <!-- 二级菜单 -->
-            <el-menu-item index="4-1">
+            <el-menu-item index="4-1" @click="saveNavState('/4-1')">
               <!-- 一级菜单模版区域 -->
               <template slot="title">
                 <!-- 图标 -->
@@ -143,7 +143,7 @@
               <span>数据统计</span>
             </template>
             <!-- 二级菜单 -->
-            <el-menu-item index="5-1">
+            <el-menu-item index="5-1" @click="saveNavState('/5-1')">
               <!-- 一级菜单模版区域 -->
               <template slot="title">
                 <!-- 图标 -->
@@ -156,7 +156,10 @@
         </el-menu>
       </el-aside>
       <!-- 右侧内容主体 -->
-      <el-main>Main</el-main>
+      <el-main>
+        <!-- 路由占位符 -->
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -166,10 +169,15 @@ export default {
   data () {
     return {
       // 是否折叠
-      isCollapse: false
+      isCollapse: false,
+
+      // 被激活的链接
+      activePath: ''
     }
   },
-
+  created () {
+    this.activePath = window.sessionStorage.getItem('activePath')
+  },
   methods: {
     /*
     logout () {
@@ -180,6 +188,10 @@ export default {
     // 点击按钮切换菜单的折叠展开
     toggleCollapse () {
       this.isCollapse = !this.isCollapse
+    },
+    saveNavState (activePath) {
+      window.sessionStorage.setItem('activePath', activePath)
+      this.activePath = activePath
     }
   }
 }
