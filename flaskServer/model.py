@@ -7,9 +7,10 @@ class User(Base):
     name = Column(String(50), unique=True)
     email = Column(String(120), unique=True)
 
-    def __init__(self, name=None, email=None):
+    def __init__(self, id=None ,name=None, email=None):
         self.name = name
         self.email = email
+        self.id =id
 
     # def __repr__(self):
     #     return '<User %r>' % (self.name)

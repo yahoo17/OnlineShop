@@ -5,7 +5,6 @@ from userinfo import *
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, ForeignKey
 from sqlalchemy.orm import sessionmaker
 from database import init_db, db_session
-
 from model import *
 
 # 解决跨域问题
@@ -78,18 +77,21 @@ def signup():
     userid = request.form['id']
     name = request.form['username']
     email = request.form['email']
-    u = User(name, email)
+    u = User(userid,name, email)
     db_session.add(u)
-    db_session.commit()
+    # db_session.commit()
     return render_template('signup-ok.html', username=name)
 
 
-@app.route('/user/<id>', methods=['POST', 'GET'])
+@app.route('/user', methods=['POST'])
 def info(id):
-    temp = userInfo_instance.get_userInfo(id)
-    print(temp)
-    return temp
+    method=request.form['method']
+    userid = request.form['id']
+    name = request.form['username']
+    email = request.form['email']
 
+    return userInfo_instance.do_crud(method,userid,name,email)
+    
 
 if __name__ == '__main__':
     app.run()
