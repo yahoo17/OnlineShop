@@ -80,8 +80,9 @@ def signup():
     u = User(userid,name, email)
     db_session.add(u)
     # db_session.commit()
-    return render_template('signup-ok.html', username=name)
-
+    # return render_template('signup-ok.html', username=name)
+    return dict(method='get',id='1',username='yanhao',email='123456',status='success')
+    # dict(method='get',id='1',username='yanhao',email='123456',status='fail')
 
 @app.route('/user', methods=['POST'])
 def info(id):
@@ -91,6 +92,7 @@ def info(id):
     email = request.form['email']
 
     return userInfo_instance.do_crud(method,userid,name,email)
+
     
 
 if __name__ == '__main__':
