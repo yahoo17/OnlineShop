@@ -24,11 +24,37 @@ class UserInfoController(object):
 
     def change_userInfo(self,id,name,email):
 
-        # user=User.query.lter(User.id=='id').first()
-        # user=User.query.filter_by()
-        # a.id=id
-        # db_session.commit()
-        return dict(method='change',id=id,username=name,email=email,status='success')
+        # # filter_by 和filter这些可以结合用
+        # stu = User.query.filter(User.id > 100)
+        # for i in stu :
+        #     print(i.id, i.name , i.email)
+
+        # stu = User.query.filter(User.id==id)
+        # for i in stu :
+        #     print(i.id, i.name , i.email)
+
+        # # stu = User.query.filter_by(name = "yanhao").first()
+
+        # stu = User.query.filter_by(name = "yanhao") # select name from User where name= "yanhao"
+        # for i in stu :
+        #     print(i.id, i.name , i.email)
+
+        # stu.name=name
+        # stu.email = email
+        
+        #方法2
+        # stu = User.query.filter(User.id==id)
+        # stu.name="chan"
+        # db.session.add(stu)
+        # db.session.commit()
+
+        #方法1
+        update_count = User.query.filter(User.id==id).update({"name":name,"email":email})
+        db.session.commit()
+        if update_count==1:
+            return dict(method='change',id=id,username=name,email=email,status='success')
+        else:
+            return dict(method='change',id=-1,username=-1,email=-1,status='fail')
     def get_userInfo(self,userID):
         # all_user=db_session.query(User).all()
         stu=User.query.get(userID)
@@ -41,6 +67,9 @@ class UserInfoController(object):
         else:
             return dict(method='get',id='-1',username='-1',email='-1',status='fail')
     
+    def get_userInfoByEmail(self,email):
+        stu = User.query.filter(User.email==email)
+        return dict(id=stu.id,username=stu.name,email=email)
 
     def add_user(self,userName,email):
         u=User(userName,email)
@@ -48,14 +77,18 @@ class UserInfoController(object):
         # db_session.commit()
         db.session.add(u)
         db.session.commit()
-        return dict(method='add',status='success')
+        # temp = self.get_userInfoByEmail(email)
+        temp2 = dict(method='add',status='success')
+        return dict(temp2.items )
 
     def del_user(self,id):
         # users = User.query.all()
         # admin=User.query()
-
-        return dict(method='del',id='1',username='yanhao',email='123456',status='success')
-
+        del_count = User.query.filter(User.id==id).delete()
+        if del_count>=1:
+            return dict(method='del',id='1',username='yanhao',email='123456',status='success')
+        else:
+            return dict(method='del',id='-1',username='-1',email='-1',status='fail')
   
 userInfo_instance= UserInfoController() 
 # class UserInfo(object):

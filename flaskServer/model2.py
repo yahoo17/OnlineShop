@@ -9,10 +9,8 @@ db=SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50))
+    name = db.Column(db.String(150))
     email = db.Column(db.String(120))
-
-    test =db.Column(db.Integer)
 
     def __init__(self, name=None, email=None):
         self.name = name
