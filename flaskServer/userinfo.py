@@ -20,6 +20,8 @@ class UserInfoController(object):
             return self.get_userInfo(id)
         elif method=="change":
             return self.change_userInfo(id,name,email) 
+        elif method=="getbyemail":
+            return self.get_userInfoByEmail(email)
         return "error method"  
 
     def change_userInfo(self,id,name,email):
@@ -68,7 +70,9 @@ class UserInfoController(object):
             return dict(method='get',id='-1',username='-1',email='-1',status='fail')
     
     def get_userInfoByEmail(self,email):
-        stu = User.query.filter(User.email==email)
+        stu = User.query.filter_by(email=email).first()
+        # print(type(stu))
+        # return "1"
         return dict(id=stu.id,username=stu.name,email=email)
 
     def add_user(self,userName,email):
@@ -77,9 +81,9 @@ class UserInfoController(object):
         # db_session.commit()
         db.session.add(u)
         db.session.commit()
-        # temp = self.get_userInfoByEmail(email)
+        temp = self.get_userInfoByEmail(email)
         temp2 = dict(method='add',status='success')
-        return dict(temp2.items )
+        return dict(**temp2, **temp )
 
     def del_user(self,id):
         # users = User.query.all()
