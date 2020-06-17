@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from flask import Flask, request, render_template
-from userinfo import *
+# from userinfo import *
 # from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, ForeignKey
 # from sqlalchemy.orm import sessionmaker
 # from database import init_db, db_session
-from model import *
+# from model import *
 
 #2020/6/17
 from flask_sqlalchemy import SQLAlchemy
@@ -14,7 +14,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 from flask_cors import *
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"]= 'mysql+pymysql://root:123456@localhost:3306/test?charset=utf8'
+app.config['SQLALCHEMY_DATABASE_URI']= 'mysql+pymysql://root:123456@localhost:3306/test?charset=utf8'
+# app.config['SQLALCHEMY_DATABASE_URI']= 'mysql+pymysql://root:123456@localhost:3306/test?charset=utf8'
                                                         #用户名 密码  服务器的ip  端口号 /数据库的名字  
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]=False
 app.config["SECRET KEY"]="woluandade"
@@ -22,7 +23,16 @@ app.config["SECRET KEY"]="woluandade"
 #db是我们操作的对象
 db=SQLAlchemy(app)                                                                                                         
 # init_db()
-
+class User(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True)
+    email = db.Column(db.String(120), unique=True)
+    test =db.Column(db.Integer)
+    def __init__(self, id=None ,name=None, email=None):
+        self.name = name
+        self.email = email
+        self.id =id
 # 解决跨域问题
 CORS(app, supports_credentials=True)
 

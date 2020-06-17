@@ -1,6 +1,10 @@
 # from database import db_session
-from model import User
+# from model import User
+from main import User,db
 
+s=User(10,'xiaoming','123@qq.com')
+db.session.add(s)
+db.session.commit()
 class UserInfoController(object):
     # def __new__(cls,*args,**kw):
     #     if not hasattr(cls,'_instance'):
