@@ -2,15 +2,26 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, request, render_template
 from userinfo import *
-from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, ForeignKey
-from sqlalchemy.orm import sessionmaker
-from database import init_db, db_session
+# from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, ForeignKey
+# from sqlalchemy.orm import sessionmaker
+# from database import init_db, db_session
 from model import *
 
+#2020/6/17
+from flask_sqlalchemy import SQLAlchemy
+#2020/0/17
 # 解决跨域问题
+
 from flask_cors import *
 app = Flask(__name__)
-init_db()
+app.config["SQLALCHEMY_DATABASE_URI"]= 'mysql+pymysql://root:123456@localhost:3306/test?charset=utf8'
+                                                        #用户名 密码  服务器的ip  端口号 /数据库的名字  
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]=False
+app.config["SECRET KEY"]="woluandade"
+
+#db是我们操作的对象
+db=SQLAlchemy(app)                                                                                                         
+# init_db()
 
 # 解决跨域问题
 CORS(app, supports_credentials=True)

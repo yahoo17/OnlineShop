@@ -1,4 +1,4 @@
-from database import db_session
+# from database import db_session
 from model import User
 
 class UserInfoController(object):
