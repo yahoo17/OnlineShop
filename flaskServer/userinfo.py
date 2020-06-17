@@ -19,7 +19,8 @@ class UserInfoController(object):
         elif method=="get":
             return self.get_userInfo(id)
         elif method=="change":
-            return self.change_userInfo(id,name,email)   
+            return self.change_userInfo(id,name,email) 
+        return "error method"  
 
     def change_userInfo(self,id,name,email):
 
@@ -27,11 +28,19 @@ class UserInfoController(object):
         # user=User.query.filter_by()
         # a.id=id
         # db_session.commit()
-        
-        return dict(method='change',id='1',username='yanhao',email='123456',status='success')
+        return dict(method='change',id=id,username=name,email=email,status='success')
     def get_userInfo(self,userID):
         # all_user=db_session.query(User).all()
-        return dict(method='get',id='1',username='yanhao',email='123456',status='success')
+        stu=User.query.get(userID)
+        if(type(stu)==User):
+            id=stu.id
+            name=stu.name
+            email=stu.email
+            print(id,name,email)
+            return dict(method='get',id=id,username= name ,email= email ,status='success')
+        else:
+            return dict(method='get',id='-1',username='-1',email='-1',status='fail')
+    
 
     def add_user(self,userName,email):
         u=User(userName,email)

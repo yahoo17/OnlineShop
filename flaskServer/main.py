@@ -18,6 +18,7 @@ from model2 import db,User
 db.init_app(app)
 
 
+
 # 解决跨域问题
 CORS(app, supports_credentials=True)
 
