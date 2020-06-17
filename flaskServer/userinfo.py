@@ -1,26 +1,25 @@
 # from database import db_session
 # from model import User
-from main import User,db
 
-s=User(10,'xiaoming','123@qq.com')
-db.session.add(s)
-db.session.commit()
+
+from model2 import User,db
+
 class UserInfoController(object):
     # def __new__(cls,*args,**kw):
     #     if not hasattr(cls,'_instance'):
     #         org=super(UserInfoController)
     #         cls._instance=org.__new__(cls,*args,**kw)
     #     return cls._instance
-    
+    # from main import User,db
     def do_crud(self,method,id,name,email):
         if method=="add":
-            return add_user(self,id,name,email)
+            return self.add_user(name,email)
         elif method=="del":
-            return del_user(self,id)
+            return self.del_user(id)
         elif method=="get":
-            return get_userInfo(self,id)
+            return self.get_userInfo(id)
         elif method=="change":
-            return change_userInfo(self,id,name,email)   
+            return self.change_userInfo(id,name,email)   
 
     def change_userInfo(self,id,name,email):
 
@@ -28,26 +27,28 @@ class UserInfoController(object):
         # user=User.query.filter_by()
         # a.id=id
         # db_session.commit()
-
-        return dict(method='get',id='1',username='yanhao',email='123456',status='success')
+        
+        return dict(method='change',id='1',username='yanhao',email='123456',status='success')
     def get_userInfo(self,userID):
         # all_user=db_session.query(User).all()
         return dict(method='get',id='1',username='yanhao',email='123456',status='success')
 
-    def add_user(self,id,userName,email):
-        # u=User(id,userName,email)
+    def add_user(self,userName,email):
+        u=User(userName,email)
         # db_session.add(u)
         # db_session.commit()
-        return dict(method='get',id='1',username='yanhao',email='123456',status='success')
+        db.session.add(u)
+        db.session.commit()
+        return dict(method='add',status='success')
 
     def del_user(self,id):
         # users = User.query.all()
         # admin=User.query()
 
-        return dict(method='get',id='1',username='yanhao',email='123456',status='success')
+        return dict(method='del',id='1',username='yanhao',email='123456',status='success')
 
-userInfo_instance=UserInfoController()        
-
+  
+userInfo_instance= UserInfoController() 
 # class UserInfo(object):
     # def __init__(self,userName,userPassword):
         
