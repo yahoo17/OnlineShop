@@ -3,7 +3,8 @@
 
 
 from model2 import User,db
-
+import json
+from flask import jsonify
 class UserInfoController(object):
     # def __new__(cls,*args,**kw):
     #     if not hasattr(cls,'_instance'):
@@ -22,8 +23,13 @@ class UserInfoController(object):
             return self.change_userInfo(id,name,email) 
         elif method=="getbyemail":
             return self.get_userInfoByEmail(email)
+        elif method=="getall":
+            return self.get_all()
         return "error method"  
-
+    def get_all(self):
+        stu_list = User.query.all()
+        print(type(stu_list))
+        return jsonify(all_users_info=[e.serialize() for e in stu_list])
     def change_userInfo(self,id,name,email):
 
         # # filter_by 和filter这些可以结合用
