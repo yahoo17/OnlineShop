@@ -1,21 +1,26 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from flask import Flask, request, render_template
-from userinfo import *
-from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, ForeignKey
-from sqlalchemy.orm import sessionmaker
-from database import init_db, db_session
-
-from model import *
-
-# 解决跨域问题
-from flask_cors import *
+from flask_cors import *            # 解决跨域问题
+from userinfo import userInfo_instance
 app = Flask(__name__)
-init_db()
+app.config['SQLALCHEMY_DATABASE_URI']= 'mysql+pymysql://root:123456@localhost:3306/test?charset=utf8'
+# app.config['SQLALCHEMY_DATABASE_URI']= 'mysql+pymysql://root:123456@localhost:3306/test?charset=utf8'
+                                                        #用户名 密码  服务器的ip  端口号 /数据库的名字  
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]=False
+app.config["SECRET KEY"]="woluandade"
+
+# #db是我们操作的对象
+# db=SQLAlchemy(app)  
+# db.create_all()                                                                                                
+# # init_db()
+from model2 import db,User
+db.init_app(app)
+
+
 
 # 解决跨域问题
 CORS(app, supports_credentials=True)
-
 
 @app.route('/test', methods=['GET', 'POST'])
 def test():
@@ -78,18 +83,36 @@ def signup():
     userid = request.form['id']
     name = request.form['username']
     email = request.form['email']
-    u = User(name, email)
+    u = User(userid,name, email)
     db_session.add(u)
-    db_session.commit()
-    return render_template('signup-ok.html', username=name)
+    # db_session.commit()
+    # return render_template('signup-ok.html', username=name)
+    return dict(method='get',id='1',username='yanhao',email='123456',status='success')
+    # dict(method='get',id='1',username='yanhao',email='123456',status='fail')
+
+@app.route('/user', methods=['POST'])
+def user():
+    method=request.form['method']
+    userid = request.form['id']
+    name = request.form['username']
+    email = request.form['email']  
+    return userInfo_instance.do_crud(method,userid,name,email)
+
+    # u=User(id = userid,name = name ,email = email)
+    # db.session.add(u)
+    # db.session.commit()
+    # db.session.close()
+    # return jsonify({"hello":"kitty"})
+    # temp = userInfo_instance.add_user(name,email)
+    # return temp
+   
+
+    
+from flask import jsonify
 
 
-@app.route('/user/<id>', methods=['POST', 'GET'])
-def info(id):
-    temp = userInfo_instance.get_userInfo(id)
-    print(temp)
-    return temp
 
 
 if __name__ == '__main__':
+    app.debug = True
     app.run()
