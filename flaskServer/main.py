@@ -61,28 +61,28 @@ def profile():
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    return "hello world you can visit /signin /sign"
+    return "hello world you can visit \n localhost:5000/signin \n localhost:5000/signin/signup "
 
 
-@app.route('/signin', methods=['GET'])
-def signin_form():
+@app.route('/signin', methods=['GET','POST'])
+def signin():
     username = request.form['username']
     password = request.form['password']
-    if username == '6666' and password == '123456':
+    if (username == '6666' or username=='admin') and (password == '123456'or password == '6666'):
         return dict(state=True)
     else:
         return dict(state=False)
     # return render_template('form.html')
 
 # 登陆 sign in
-@app.route('/signin', methods=['POST'])
-def signin():
-    username = request.form['username']
-    password = request.form['password']
-    if username == '6666' and password == '123456':
-        return dict(state=True)
-    else:
-        return dict(state=False)
+# @app.route('/signin', methods=['POST'])
+# def signin():
+#     username = request.form['username']
+#     password = request.form['password']
+#     if (username == '6666' or username=='admin') and (password == '123456'or password == '6666'):
+#         return dict(state=True)
+#     else:
+#         return dict(state=False)
         # return render_template('signin-ok.html', username=username)
     # return render_template('form.html', message='Bad username or password', username=username)
 
@@ -107,6 +107,9 @@ def user():
     email = request.form['email']  
     return userInfo_instance.do_crud(method,userid,name,email)
 
+@app.route('/user', methods=['GET'])
+def get_alluser():
+    return userInfo_instance.do_crud('getall',-1,-1,-1)
     # u=User(id = userid,name = name ,email = email)
     # db.session.add(u)
     # db.session.commit()
@@ -118,8 +121,6 @@ def user():
 
     
 from flask import jsonify
-
-
 
 
 if __name__ == '__main__':
