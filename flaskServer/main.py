@@ -66,18 +66,27 @@ def home():
 
 @app.route('/signin', methods=['GET'])
 def signin_form():
-    return render_template('form.html')
+    username = request.form['username']
+    password = request.form['password']
+    if username == '6666' and password == '123456':
+        return dict(state=True)
+    else:
+        return dict(state=False)
+    # return render_template('form.html')
 
-
+# 登陆 sign in
 @app.route('/signin', methods=['POST'])
 def signin():
     username = request.form['username']
     password = request.form['password']
     if username == '6666' and password == '123456':
-        return render_template('signin-ok.html', username=username)
-    return render_template('form.html', message='Bad username or password', username=username)
+        return dict(state=True)
+    else:
+        return dict(state=False)
+        # return render_template('signin-ok.html', username=username)
+    # return render_template('form.html', message='Bad username or password', username=username)
 
-
+# 注册 sign up
 @app.route('/signup', methods=['POST'])
 def signup():
     userid = request.form['id']
