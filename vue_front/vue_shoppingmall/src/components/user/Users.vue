@@ -9,7 +9,6 @@
 
     <!-- 卡片视图区域 -->
     <el-card>
-
       <el-row :gutter="20">
         <el-col :span="7">
           <!-- 搜索区域 -->

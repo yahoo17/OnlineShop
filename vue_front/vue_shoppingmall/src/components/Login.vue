@@ -26,6 +26,8 @@
 </template>
 
 <script>
+// 导入qs包
+import qs from 'qs'
 export default {
   data () {
     return {
@@ -63,9 +65,9 @@ export default {
         if (!valid) return
         // const result = await this.$http.get('')
 
-        const result = await this.$http.post('', this.loginForm)
+        const result = await this.$http.post('signin', qs.stringify(this.loginForm))
 
-        console.log(result)
+        console.log(JSON.parse(result.request.response))
       })
     }
   }
